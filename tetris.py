@@ -1,4 +1,5 @@
 from shape import Shape
+
 class Tetris:
     level=2
     score=0

@@ -1,4 +1,5 @@
 import random
+
 colors= [
     (0, 0, 0),
     (120, 37, 179),
