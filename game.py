@@ -17,7 +17,7 @@ pygame.display.set_caption("Tetris")
 
 done = False
 clock = pygame.time.Clock()
-fps = 10
+fps = 5
 game = Tetris(20,10)
 counter = 0
 
@@ -56,7 +56,7 @@ while not done:
         if event.key == pygame.K_DOWN:
             pressing_down = False
 
-    screen.fill(BLACK)
+    screen.fill(WHITE)
 
     for i in range(game.height):
         for j in range(game.width):
@@ -81,7 +81,7 @@ while not done:
     text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
 
     screen.blit(text, [0, 0])
-    if game.state == "gameover":
+    if game.state == "game_over":
         screen.blit(text_game_over, [20, 200])
         screen.blit(text_game_over1, [25, 265])
 
