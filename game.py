@@ -1,5 +1,4 @@
 import pygame
-
 from tetris import Tetris
 from shape import colors
 
@@ -9,6 +8,9 @@ pygame.init()
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
+BACKGROUND = (73, 69, 106)
+#(105, 104, 128)
+#CONTUR = ()
 
 size = (400, 500)
 screen = pygame.display.set_mode(size)
@@ -17,11 +19,11 @@ pygame.display.set_caption("Tetris")
 
 done = False
 clock = pygame.time.Clock()
-fps = 5
+fps = 20
 game = Tetris(20,10)
 counter = 0
 
-pressing_down =False
+pressing_down = False
 
 while not done:
     
@@ -50,17 +52,19 @@ while not done:
             if event.key == pygame.K_SPACE:
                 game.go_space()
             if event.key == pygame.K_ESCAPE:
-                game.__init__(20, 10)
-        
+                counter=0
+                game.clear()
+                game = Tetris(20, 10)
+
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_DOWN:
             pressing_down = False
 
-    screen.fill(WHITE)
+    screen.fill(BACKGROUND)
 
     for i in range(game.height):
         for j in range(game.width):
-            pygame.draw.rect(screen, GRAY, [game.x + game.zoom * j, game.y + game.zoom *i, game.zoom, game.zoom], 1)
+            pygame.draw.rect(screen, WHITE, [game.x + game.zoom * j, game.y + game.zoom *i, game.zoom, game.zoom], 1)
             if game.grid[i][j] > 0 :
                 pygame.draw.rect(screen, colors[game.grid[i][j]], [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
 
@@ -75,15 +79,17 @@ while not done:
                                      game.zoom - 2, game.zoom - 2])
     
     font = pygame.font.SysFont('Calibri', 25, True, False)
-    font1 = pygame.font.SysFont('Calibri', 65, True, False)
+    font1 = pygame.font.SysFont('Calibri', 45, True, False)
     text = font.render("Current score: " + str(game.score), True, BLACK)
-    text_game_over = font1.render("Game Over", True, (255, 125, 0))
-    text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
+    text_game_over = font1.render("Game Over", True, BLACK )
+    text_quit = font1.render("Press Esc to quit", True, BLACK )
+    text_restart = font1.render("Press Enter to Restart", True, BLACK)
 
     screen.blit(text, [0, 0])
     if game.state == "game_over":
         screen.blit(text_game_over, [20, 200])
-        screen.blit(text_game_over1, [25, 265])
+        screen.blit(text_quit, [20, 250])
+        screen.blit(text_restart, [20, 300])
 
     pygame.display.flip()
     clock.tick(fps)

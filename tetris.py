@@ -12,6 +12,7 @@ class Tetris:
     zoom=20
     shape=None
     '''we create a grid with the size height * width'''
+
     def __init__(self,h,w):
         self.height=h
         self.width=w
@@ -20,6 +21,7 @@ class Tetris:
             for j in range(self.width):
                 line.append(0)
             self.grid.append(line)
+
     def new_shape(self):
         self.shape=Shape(3,0)
 
@@ -79,3 +81,16 @@ class Tetris:
         self.shape.rotate()
         if self.intersects():
             self.shape.rotation = old_rotation
+
+    def clear(self):
+        level=2
+        score=0
+        state="start"
+        grid=[]
+        height=0
+        width=0
+        x=100
+        y=60
+        zoom=20
+        shape=None
+        
