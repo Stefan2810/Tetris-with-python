@@ -1,17 +1,8 @@
 import pygame
-import random
-import shape 
-import tetris
 
-colors= [
-    (0, 0, 0),
-    (120, 37, 179),
-    (100, 179, 179),
-    (80, 34, 22),
-    (80, 134, 22),
-    (180, 34, 22),
-    (180, 34, 122),
-]
+from tetris import Tetris
+from shape import colors
+
 
 pygame.init()
 
@@ -26,9 +17,9 @@ pygame.display.set_caption("Tetris")
 
 done = False
 clock = pygame.time.Clock()
-fps = 50
+fps = 10
 game = Tetris(20,10)
-counnter = 0
+counter = 0
 
 pressing_down =False
 
@@ -65,7 +56,7 @@ while not done:
         if event.key == pygame.K_DOWN:
             pressing_down = False
 
-    screen.fill(WHITE)
+    screen.fill(BLACK)
 
     for i in range(game.height):
         for j in range(game.width):
@@ -80,7 +71,7 @@ while not done:
                 if p in game.shape.image():
                     pygame.draw.rect(screen, colors[game.shape.color], 
                                     [game.x + game.zoom * (j + game.shape.x) + 1,
-                                     game.y + game.zoom * (i + game.figure.y) + 1,
+                                     game.y + game.zoom * (i + game.shape.y) + 1,
                                      game.zoom - 2, game.zoom - 2])
     
     font = pygame.font.SysFont('Calibri', 25, True, False)
