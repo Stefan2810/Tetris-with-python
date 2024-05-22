@@ -95,19 +95,21 @@ def main():
                 mouse_pos = pygame.mouse.get_pos()
                 if button_x <= mouse_pos[0] <= button_x + button_width and button_y <= mouse_pos[1] <= button_y + button_height:
                     play_again(game,high_score)
-                elif size[0] - 100 <= mouse_pos[0] <= size[0] - 50 and 10 <= mouse_pos[1] <= 60:
+                elif size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1] <= 60:
                     dark_mode = toggle_dark_mode(dark_mode)
 
         if dark_mode:
+            mouse_pos = pygame.mouse.get_pos()
             screen.fill(DARK_BACKGROUND)
             grid_color=WHITE
-            button_color2=LIGHT_BACKGROUND
+            button_color2=LIGHT_BACKGROUND if not (size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1]) else BUTTON_HOVER_COLOR
             text_b="Light"
             
         else:
+            mouse_pos = pygame.mouse.get_pos()
             screen.fill(LIGHT_BACKGROUND)
-            grid_color=BLACK
-            button_color2=DARK_BACKGROUND
+            grid_color=HOTPINK
+            button_color2=DARK_BACKGROUND if not (size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1]) else BUTTON_HOVER_COLOR
             text_b="Dark"
        
 
