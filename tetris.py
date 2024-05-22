@@ -1,35 +1,31 @@
 from shape import Shape
+import pygame
+import time
 
 class Tetris:
-    level=2
-    score=0
-    state="start"
-    grid=[]
-    height=0
-    width=0
-    x=100
-    y=60
-    zoom=20
-    shape=None
-    '''we create a grid with the size height * width'''
-
-    def __init__(self,h,w):
-        self.height=h
-        self.width=w
-        for i in range(self.height):
-            line=[]
-            for j in range(self.width):
-                line.append(0)
-            self.grid.append(line)
+    def __init__(self, h, w):
+        self.height = h
+        self.width = w
+        self.grid = [[0] * w for _ in range(h)]
+        self.score = 0
+        self.state = "start"
+        self.new_shape()
+        self.x = 100
+        self.y = 60
+        self.zoom = 30
+        self.shape = None
+        self.drop_time = 0  # Time when the shape hits the bottom or another piece
+        self.drop_delay = 0.5  # 2-second delay
+        self.high_score=0
 
     def new_shape(self):
-        self.shape=Shape(3,0)
+        self.shape = Shape(3, 0)
 
     def intersects(self):
-        intersection=False
+        intersection = False
         for i in range(4):
             for j in range(4):
-                if i*4+j in self.shape.image():
+                if i * 4 + j in self.shape.image():
                     if i + self.shape.y > self.height - 1 or j + self.shape.x > self.width - 1 or j + self.shape.x < 0 or self.grid[i + self.shape.y][j + self.shape.x] > 0:
                         intersection = True
         return intersection
@@ -43,32 +39,39 @@ class Tetris:
                     zeros += 1
             if zeros == 0:
                 lines += 1
-                for i1 in range(i, 1, -1):
+                for k in range(i, 1, -1):
                     for j in range(self.width):
-                        self.grid[i1][j] = self.grid[i1 - 1][j]
+                        self.grid[k][j] = self.grid[k - 1][j]
         self.score += lines ** 2
 
-    def go_space(self):
+    def stop_fig(self):
+        # If the piece has just landed, start the timer
+        if self.drop_time == 0:
+            self.drop_time = time.time()
+
+        # Check if the 2-second delay has passed
+        if time.time() - self.drop_time >= self.drop_delay:
+            for i in range(4):
+                for j in range(4):
+                    if i * 4 + j in self.shape.image():
+                        self.grid[i + self.shape.y][j + self.shape.x] = self.shape.color
+            self.completed_line()
+            self.new_shape()
+            self.drop_time = 0  # Reset the timer
+            if self.intersects():
+                self.state = "game_over"
+
+    def go_fast(self):
         while not self.intersects():
             self.shape.y += 1
         self.shape.y -= 1
-        self.freeze()
+        self.stop_fig()
 
     def go_down(self):
         self.shape.y += 1
         if self.intersects():
             self.shape.y -= 1
-            self.freeze()
-
-    def freeze(self):
-        for i in range(4):
-            for j in range(4):
-                if i * 4 + j in self.shape.image():
-                    self.grid[i + self.shape.y][j + self.shape.x] = self.shape.color
-        self.completed_line()
-        self.new_shape()
-        if self.intersects():
-            self.state = "game_over"
+            self.stop_fig()
 
     def go_side(self, dx):
         old_x = self.shape.x
@@ -82,15 +85,11 @@ class Tetris:
         if self.intersects():
             self.shape.rotation = old_rotation
 
-    def clear(self):
-        level=2
-        score=0
-        state="start"
-        grid=[]
-        height=0
-        width=0
-        x=100
-        y=60
-        zoom=20
-        shape=None
-        
+    def play_again(self):
+        self.score = 0
+        self.state = "start"
+        self.grid = [[0] * self.width for _ in range(self.height)]
+        self.new_shape()
+        self.drop_time = 0
+
+

@@ -26,7 +26,11 @@ class Shape:
     shape_Q=[[1, 2, 5, 6]]
     shape_S=[[1, 2, 4, 5], [1, 5, 6, 10]]
     shape_Z=[[0, 1, 5, 6], [2, 5, 6, 9]]
-    shapes=[shape_I, shape_J, shape_L, shape_T, shape_Q, shape_S, shape_Z]
+    shape_plus=[[1,4,5,6,9]]
+    shape_U=[[0,2,4,6,8,9,10],[0,1,2,6,8,9,10],[0,1,2,4,6,8,10],[0,1,2,4,8,9,10]]
+    shape_hill=[[0,4,5,8,9,10],[2,5,6,8,9,10],[0,1,2,5,6,10],[0,1,2,4,5,8]]
+    shapes=[shape_I, shape_J, shape_L, shape_T, shape_Q, shape_S, shape_Z,shape_plus,shape_U,shape_hill]
+
 
     def __init__(self, x, y):
         self.x=x
@@ -35,6 +39,7 @@ class Shape:
         self.color=random.randint(1,len(colors)-1)
         self.rotation=0
     
+
     def image(self):
         return self.shapes[self.type][self.rotation]
     
