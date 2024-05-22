@@ -8,7 +8,9 @@ This repository hosts a simple Tetris game implemented in Python using the Pygam
 
 - **Basic Tetris Gameplay:** Players can control the falling tetrominoes using arrow keys to move left, right, rotate, or accelerate their descent.
 - **Scoring System:** Points are awarded for completing lines, with additional points for clearing multiple lines simultaneously, and the game keeps track of the high score in the current game session
-- **Additional shape tiles** U, plus sign ,stair(hill) -**Dark mode/Light mode** We have different color schematics for each preference -**Hard mode/Easy mode:** Adjusts the falling speed of the figure accordingly
+- **Additional shape tiles** U, plus sign ,stair(hill)
+- **Dark mode/Light mode** We have different color schematics for each preference
+- **Hard mode/Easy mode:** Adjusts the falling speed of the figure accordingly
 - **Game Over State:** The game ends when the stack of tetrominoes reaches the top of the playfield, triggering a game over state.
 - **Graphics and UI:** The game features simple graphics and a user interface displaying the current score. Pygame's drawing functions are used to render the game elements.
 
