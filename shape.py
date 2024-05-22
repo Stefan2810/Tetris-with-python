@@ -35,7 +35,7 @@ class Shape:
     shape_S=[[1, 2, 4, 5], [1, 5, 6, 10]]
     shape_Z=[[0, 1, 5, 6], [2, 5, 6, 9]]
     shape_plus=[[1,4,5,6,9]]
-    shape_U=[[0,2,4,6,8,9,10],[0,1,2,6,8,9,10],[0,1,2,4,6,8,10],[0,1,2,4,8,9,10]]
+    shape_U=[[0,2,4,5,6],[0,1,5,8,9,],[0,1,2,4,6],[0,1,4,8,9]]
     shape_hill=[[0,4,5,8,9,10],[2,5,6,8,9,10],[0,1,2,5,6,10],[0,1,2,4,5,8]]
     shapes=[shape_I, shape_J, shape_L, shape_T, shape_Q, shape_S, shape_Z, shape_plus, shape_U, shape_hill]
 

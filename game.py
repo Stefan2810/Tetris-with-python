@@ -23,6 +23,10 @@ def play_again(game,high_score):
     game.new_shape()  # Initialize a new shape
     game.high_score = high_score 
 
+def toggle_hard_mode(hard_mode):
+    return not hard_mode
+
+
 def main():
     pygame.init()
 
@@ -36,11 +40,13 @@ def main():
     # Initialize game variables
     done = False
     clock = pygame.time.Clock()
-    fps = 60  # Update screen 60 times per second
+    fps = 60  # Updates screen 60 times per second
     game = init_game()
     pressing_down = False
     high_score = 0
     dark_mode = True
+    hard_mode = False
+    fall_speed=300 #300 ms
 
     # Calculate the x and y positions for centering the grid
     grid_width = game.width * game.zoom
@@ -53,6 +59,10 @@ def main():
     button_height = 50
     button_x = (size[0] - button_width) // 2
     button_y = size[1] - button_height - 60
+    hard_mode_button_x = size[0] - 100
+    hard_mode_button_y = 70
+    hard_mode_button_width = 80
+    hard_mode_button_height = 50
 
     # Initialize the timer for automatic downward movement
     last_move_down_time = pygame.time.get_ticks()
@@ -64,7 +74,7 @@ def main():
             game.new_shape()
 
         # Check if it's time to move the shape down
-        if current_time - last_move_down_time >= 300:  # 300 ms = 0.3 second
+        if current_time - last_move_down_time >= fall_speed:
             if game.state == "start":
                 game.go_down()
             last_move_down_time = current_time
@@ -97,23 +107,32 @@ def main():
                     play_again(game,high_score)
                 elif size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1] <= 60:
                     dark_mode = toggle_dark_mode(dark_mode)
+                elif hard_mode_button_x <= mouse_pos[0] <= hard_mode_button_x + hard_mode_button_width and hard_mode_button_y <= mouse_pos[1] <= hard_mode_button_y + hard_mode_button_height:
+                    hard_mode = toggle_hard_mode(hard_mode)
+                    fall_speed = 150 if hard_mode else 300
+
 
         # these 2 functions are handling the dark or light color scheme preference of the user:
-
+        
+        mouse_pos = pygame.mouse.get_pos()
+        dark_mode_hover = size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1] <= 60
         if dark_mode:
-            mouse_pos = pygame.mouse.get_pos()
+            
             screen.fill(DARK_BACKGROUND)
             grid_color=WHITE
-            button_color2=LIGHT_BACKGROUND if not (size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1]) else BUTTON_HOVER_COLOR
+            button_color2=LIGHT_BACKGROUND if not dark_mode_hover else BUTTON_HOVER_COLOR
+            
+            hard_mode_button_color = BUTTON_HOVER_COLOR if hard_mode_button_x <= mouse_pos[0] <= hard_mode_button_x + hard_mode_button_width and hard_mode_button_y <= mouse_pos[1] <= hard_mode_button_y + hard_mode_button_height else LIGHT_BACKGROUND
             text_b="Light"
             
         else:
-            mouse_pos = pygame.mouse.get_pos()
+            
             screen.fill(LIGHT_BACKGROUND)
             grid_color=HOTPINK
-            button_color2=DARK_BACKGROUND if not (size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1]) else BUTTON_HOVER_COLOR
+            button_color2=DARK_BACKGROUND if not dark_mode_hover else BUTTON_HOVER_COLOR
+            hard_mode_button_color = BUTTON_HOVER_COLOR if hard_mode_button_x <= mouse_pos[0] <= hard_mode_button_x + hard_mode_button_width and hard_mode_button_y <= mouse_pos[1] <= hard_mode_button_y + hard_mode_button_height else DARK_BACKGROUND
             text_b="Dark"
-       
+
 
         # Draw the grid
         for i in range(game.height):
@@ -162,11 +181,19 @@ def main():
             button_text = button_font.render("Play Again", True, DARK_BACKGROUND)
             screen.blit(button_text, [button_x + (button_width - button_text.get_width()) // 2, button_y + (button_height - button_text.get_height()) // 2])
              
-            # Draw the dark mode button
+        # Draw the dark mode button
         pygame.draw.rect(screen, button_color2, [size[0] - 100, 10, 80, 50])
         font = pygame.font.SysFont('Calibri', 22, True, False)
         button_text = font.render(text_b, True, HOTPINK)
         screen.blit(button_text, [size[0] - 90, 20])
+        
+
+       
+        pygame.draw.rect(screen, hard_mode_button_color, [hard_mode_button_x, hard_mode_button_y, hard_mode_button_width, hard_mode_button_height])
+        hard_mode_text = "Hard" if not hard_mode else "Easy"
+        button_text = font.render(hard_mode_text, True, HOTPINK)
+        screen.blit(button_text, [hard_mode_button_x + 10, hard_mode_button_y + 15])
+        
         pygame.display.flip()
         clock.tick(fps)
 
