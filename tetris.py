@@ -14,8 +14,8 @@ class Tetris:
         self.y = 60
         self.zoom = 30
         self.shape = None
-        self.drop_time = 0  # Time when the shape hits the bottom or another piece
-        self.drop_delay = 0.5  # 2-second delay
+        self.drop_time = 0  # the time it takes to process that 2 figures intersected 
+        self.drop_delay = 0.5  # 2-seconds delay
         self.high_score=0
 
     def new_shape(self):
@@ -45,7 +45,7 @@ class Tetris:
         self.score += lines ** 2
 
     def stop_fig(self):
-        # If the piece has just landed, start the timer
+        # When the piece has just landed, the timer starts
         if self.drop_time == 0:
             self.drop_time = time.time()
 
@@ -88,7 +88,7 @@ class Tetris:
     def play_again(self):
         self.score = 0
         self.state = "start"
-        self.grid = [[0] * self.width for _ in range(self.height)]
+        self.grid = [[0] * self.width for _ in range(self.height)] # clearing the previous grid 
         self.new_shape()
         self.drop_time = 0
 

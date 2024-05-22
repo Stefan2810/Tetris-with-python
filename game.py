@@ -98,6 +98,8 @@ def main():
                 elif size[0] - 100 <= mouse_pos[0] <= size[0] - 20 and 10 <= mouse_pos[1] <= 60:
                     dark_mode = toggle_dark_mode(dark_mode)
 
+        # these 2 functions are handling the dark or light color scheme preference of the user:
+
         if dark_mode:
             mouse_pos = pygame.mouse.get_pos()
             screen.fill(DARK_BACKGROUND)
